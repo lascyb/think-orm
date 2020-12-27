@@ -226,13 +226,13 @@ trait RelationShip
      * @param  bool    $first
      * @return bool
      */
-    public function eagerly(Query $query, string $relation, $field, string $joinType = '', Closure $closure = null, bool $first = false): bool
+    public function eagerly(Query $query, string $relation, $field, string $joinType = '', Closure $closure = null, bool $first = false,$relationOn=[]): bool
     {
         $relation = Str::camel($relation);
         $class    = $this->$relation();
 
         if ($class instanceof OneToOne) {
-            $class->eagerly($query, $relation, $field, $joinType, $closure, $first);
+            $class->eagerly($query, $relation, $field, $joinType, $closure, $first,$relationOn);
             return true;
         } else {
             return false;

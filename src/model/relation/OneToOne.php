@@ -65,7 +65,7 @@ abstract class OneToOne extends Relation
      * @param  bool    $first
      * @return void
      */
-    public function eagerly(Query $query, string $relation, $field = true, string $joinType = '', Closure $closure = null, bool $first = false): void
+    public function eagerly(Query $query, string $relation, $field = true, string $joinType = '', Closure $closure = null, bool $first = false,$relationOn=[]): void
     {
         $name = Str::snake(class_basename($this->parent));
 
@@ -94,6 +94,11 @@ abstract class OneToOne extends Relation
             $joinOn = $name . '.' . $this->foreignKey . '=' . $joinAlias . '.' . $this->localKey;
         } else {
             $joinOn = $name . '.' . $this->localKey . '=' . $joinAlias . '.' . $this->foreignKey;
+        }
+        if (!empty($relationOn)&&is_array($relationOn)){
+            foreach ($relationOn as $k=>$v){
+                $joinOn .= " and {$k}={$v}";
+            }
         }
 
         if ($closure) {

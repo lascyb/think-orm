@@ -225,6 +225,13 @@ trait ModelRelationQuery
             $closure = null;
             $field   = true;
 
+            if(isset($relation["on"])){
+                $relationOn=$relation['on'];
+                $relation=isset($relation[0])?$relation[0]:$key;
+            }else{
+                $relationOn=[];
+            }
+
             if ($relation instanceof Closure) {
                 // 支持闭包查询过滤关联条件
                 $closure  = $relation;
@@ -236,7 +243,7 @@ trait ModelRelationQuery
                 $relation = strstr($relation, '.', true);
             }
 
-            $result = $this->model->eagerly($this, $relation, $field, $joinType, $closure, $first);
+            $result = $this->model->eagerly($this, $relation, $field, $joinType, $closure, $first,$relationOn);
 
             if (!$result) {
                 unset($with[$key]);
